@@ -1,0 +1,123 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>常见问题</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+</head>
+<style>
+*{
+	margin: 0;
+	padding: 0;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+  	-webkit-tap-highlight-color: transparent;
+}
+body{
+	padding-bottom: 30px;
+	background: #F3F3F3;
+}
+.qUl{
+	list-style: none;
+}
+.qUl li{
+	border-bottom: 1px solid #DCDCDC
+}
+.qUl span{
+	font-size: 16px;
+	color: #222;
+	padding: 15px;
+	display: block;
+	background: #fff;
+	box-sizing: border-box;
+}
+.qUl div{
+	color: #666;
+	font-size: 13px;
+	padding: 10px 15px;
+	background: #F3F3F3;
+	display: none;
+	line-height: 20px;
+}
+</style>
+<body>
+	<ul class="qUl">
+		<li>
+			<span class="qSpan">1.怎样参加粤科众包？</span>
+			<div class="qDiv">
+				<p style="line-height: 30px;">使用手机号、微信、微博、QQ等登录，就可以参加粤科众包了。</p>
+				<p>参加方式：<br />
+				a、花粤科众包粤科众包粤科众包；<br />
+				b、粤科众包粤科众包粤科众包粤科众包粤科众包。<br />
+				粤科众包，就是这么简单！
+				</p>
+			</div>
+		</li>
+		<li>
+			<span class="qSpan">2.努力服务于客户？</span>
+			<div class="qDiv">
+				a、粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包；<br />
+
+				
+			</div>
+		</li>
+		<li>
+			<span class="qSpan">3.成功达成合作协议？</span>
+			<div class="qDiv">
+				粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包
+			</div>
+		</li>
+		<li>
+			<span class="qSpan">4.精益求精？</span>
+			<div class="qDiv">
+				粤科众包粤科众包粤科众包粤科众包
+			</div>
+		</li>
+		<li>
+			<span class="qSpan">5.快速迭代交付？</span>
+			<div class="qDiv">
+				粤科众包粤科众包粤科众包粤科众包
+			</div>
+		</li>
+		<li>
+			<span class="qSpan">6.发版测试？</span>
+			<div class="qDiv">
+				粤科众包粤科众包粤科众包粤科众包；<br />
+				粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包粤科众包。
+			</div>
+		</li>
+		<li>
+			<span class="qSpan">7.什么是粤科众包？</span>
+			<div class="qDiv">
+				粤科众包粤科众包粤科众包粤科众包粤科众包
+			</div>
+		</li>
+		<li>
+			<span class="qSpan">8.所有活动及商品均与苹果公司无关</span>
+			<div class="qDiv">
+				通过本产品（粤科众包）所从事的任何活动及其获得的任何奖励均与苹果公司无关。 <br />苹果公司既不作为赞助商也不以任何形式参与。
+			</div>
+		</li>
+	</ul>
+</body>
+<script>
+	var qUl = document.getElementsByClassName('qUl')[0];
+	qUl.addEventListener('click',function(e) {
+		var target = e.target;
+		var node = target.nodeName.toLowerCase();
+		if(node === "span") {
+			var qDiv = target.nextSibling.nextSibling,
+				allDiv = document.getElementsByClassName('qDiv'),
+				qBol = false;
+			if(qDiv.style.display == "block") {
+				qBol = true
+			}
+			for(var i = 0; i < 7; i++) {
+				allDiv[i].style.display = "none"
+			}
+			qDiv.style.display = qBol?'none':'block';
+		}
+	})
+</script>
+</html>

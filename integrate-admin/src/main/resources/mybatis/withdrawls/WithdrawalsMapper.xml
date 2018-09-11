@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="WithdrawalsMapper">
+	<resultMap id="withdrawals"
+		type="com.integrate.admin.module.withdrawals.model.Withdrawals">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="money" property="money" jdbcType="INTEGER" />
+		<result column="time" property="time" jdbcType="BIGINT" />
+		<result column="state" property="state" jdbcType="TINYINT" />
+	</resultMap>
+
+
+	<select id="datalistPage" parameterType="map" resultMap="withdrawals">
+		SELECT w.* FROM t_withdrawals w,t_user u WHERE w.user_id = u.user_id AND 1=1
+		<if test="pd.citycode != null and pd.citycode!= ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND u.city_code = #{pd.citycode}
+		</if>
+		<if test="pd.areacode != null and pd.areacode != ''">
+			AND u.area_code =#{pd.areacode}
+		</if>
+		<if test="pd.userId != null and pd.userId != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND w.user_id =#{pd.userId}
+		</if>
+		<if test="pd.begin != null and pd.begin != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND w.TIME &gt; #{pd.begin}
+		</if>
+		<if test="pd.end != null and pd.end != ''">
+			AND w.TIME &lt; #{pd.end}
+		</if>
+		ORDER BY w.id DESC
+	</select>
+
+	<select id="excelSelectAll" parameterType="pd" resultMap="withdrawals" useCache="false" >
+		SELECT * FROM t_withdrawals WHERE 1=1
+		<if test="userId != null and userId != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND user_id =#{userId}
+		</if>
+		<if test="begin != null and begin != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND TIME &gt; #{begin}
+		</if>
+
+		<if test="end != null and end != ''">
+			AND TIME &lt; #{end}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+</mapper>

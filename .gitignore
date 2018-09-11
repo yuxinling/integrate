@@ -1,0 +1,17 @@
+.classpath
+bin/
+.project
+.settings/
+logs/
+.gradle/
+build/
+out/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+work/
+.vagrant/
+.idea/
+bin-debug/
+bin-release/

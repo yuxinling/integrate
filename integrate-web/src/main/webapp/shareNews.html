@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>粤科众包</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/weui/1.0.2/style/weui.min.css"/>
+    <link rel="stylesheet" href="static/newsStyle.css"/>
+</head>
+<body>
+
+<div id="app">
+
+    <div class="news-wrap">
+        <div class="title">加载中...</div>
+        <div class="news-info"><span class="news-name">加载中...</span><span class="news-time">加载中...</span></div>
+
+        <div class="news-editor"></div>
+
+    </div>
+
+
+    <div id="message-list" class="weui-panel weui-panel_access">
+        <div class="weui-panel__hd">热门跟帖</div>
+        <div class="weui-panel__bd" id="comment-wrap">
+            <!--评论列表-->
+        </div>
+
+    </div>
+
+    <script type="text/html" id="comment-item">
+        <%if ( list.length > 0 ){%>
+            <%for (var i=0; i < list.length; i++) {%>
+                <div class="weui-media-box weui-media-box_text weui-flex">
+
+                    <div class="weui-media-box__hd">
+                        <img class="weui-media-box__thumb" src="<%=list[i].pubUserHeadImg%>" alt="">
+                    </div>
+
+                    <div class="weui-flex__item">
+                        <h4 class="weui-media-box__title"><span><%= list[i].pubTime%></span><%=list[i].pubUserNickname%></h4>
+                        <p class="weui-media-box__desc"><%= list[i].content%></p>
+                    </div>
+
+                </div>
+            <%}%>
+        <%}else{%>
+                <div class="weui-media-box weui-media-box_text weui-flex">
+                    <div class="news-editor"><p>暂无评论</p></div>
+                </div>
+        <%}%>
+
+    </script>
+
+    <div class="fix-nav-wrap">
+        <div class="fix-nav">
+            <div>
+                <div class="weui-flex">
+                    <div class="logo-icon">
+                         <img src="static/logo.png"/>
+                    </div>
+                    <div class="weui-flex__item">
+                        <h1>粤科众包</h1>
+
+                        <h2>资讯、人才、项目、问答</h2>
+                    </div>
+                </div>
+            </div>
+            <a class="open-appstore" href="">立即打开</a>
+        </div>
+    </div>
+</div>
+
+<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script src="static/arttemplate-native.js"></script>
+<script src="static/newsapp.js"></script>
+</body>
+</html>

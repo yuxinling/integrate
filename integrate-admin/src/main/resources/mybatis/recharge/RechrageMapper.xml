@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="RechrageMapper">
+	<resultMap id="recharge"
+		type="com.integrate.admin.module.rechrage.model.Rechrage">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="city_code" property="cityCode" jdbcType="INTEGER" />
+		<result column="area_code" property="areaCode" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="money" property="money" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="time" property="time" jdbcType="BIGINT" />
+		<result column="trade_no" property="tradeNo" jdbcType="BIGINT" />
+		<result column="is_freeze" property="isFreeze" />
+		<result column="status" property="status" />
+		<result column="is_artificial" property="artificial" />
+		<result column="proxy_user_id" property="proxyUserId" />
+	</resultMap>
+
+	<select id="datalistPage" parameterType="map" resultMap="recharge">
+		SELECT * FROM t_rechrage WHERE 1=1 and state =1
+		<if test="pd.type != null and pd.type != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND type =#{pd.type}
+		</if>
+		<if test="pd.userId != null and pd.userId != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND user_id =#{pd.userId}
+		</if>
+		<if test="pd.begin != null and pd.begin != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND TIME &gt; #{pd.begin}
+		</if>
+
+		<if test="pd.end != null and pd.end != ''">
+			AND TIME &lt; #{pd.end}
+		</if>
+		<if test="pd.areaCode != null and pd.areaCode != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND area_code =#{pd.areaCode}
+		</if>
+		<if test="pd.proxyUserId != null and pd.proxyUserId != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND proxy_user_id =#{pd.proxyUserId}
+		</if>
+		ORDER BY id DESC
+		
+	</select>
+
+	<select id="excelSelectAll" parameterType="pd" resultMap="recharge" useCache="false" >
+		SELECT * FROM t_rechrage WHERE 1=1 and state =1
+		<if test="type != null and type != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND type =#{type}
+		</if>
+		<if test="userId != null and userId != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND user_id =#{userId}
+		</if>
+		<if test="begin != null and begin != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND TIME &gt; #{begin}
+		</if>
+
+		<if test="end != null and end != ''">
+			AND TIME &lt; #{end}
+		</if>
+		<if test="areaCode != null and areaCode != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND area_code =#{areaCode}
+		</if>
+		<if test="proxyUserId != null and proxyUserId != ''"><!-- 关键词检索 and title like '%$pd.keyword$%' -->
+			AND proxy_user_id =#{proxyUserId}
+		</if>
+		ORDER BY id DESC
+
+	</select>
+
+</mapper>

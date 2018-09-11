@@ -1,0 +1,169 @@
+def SpringVersion = '4.0.1.RELEASE'
+def JettyVersion = '8.1.14.v20131031'
+def MetricsVersion = '3.1.2'
+
+apply plugin: 'idea'
+idea.project.languageLevel = '1.7'
+
+buildscript {
+        repositories {
+            maven { url "https://repo1.maven.org/maven2/" }
+        }
+        dependencies {
+            //classpath "net.saliman:gradle-cobertura-plugin:2.2.2"
+        }
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	apply plugin: 'idea'
+
+    test {
+        ignoreFailures = true
+        forkEvery = 5
+        maxParallelForks = Runtime.runtime.availableProcessors()
+        exclude 'org/databene/**'
+    }
+
+
+    version = "git rev-parse --short HEAD".execute().text.trim()
+
+    [compileJava, compileTestJava]*.options*.encoding = "UTF-8"
+	
+	repositories {
+		maven { url "https://repo1.maven.org/maven2/" }
+	    mavenCentral()
+	}
+
+	configurations {
+		all*.exclude group: 'commons-logging', module: 'commons-logging'
+	}
+	
+    processResources << {
+        file("$destinationDir/version.properties").text = 'version=' + project.version
+    }
+
+	task copyLib(type: Sync, dependsOn: jar) {
+		from configurations.compile
+		from jar.archivePath
+		into 'build/deploy'
+	}
+	
+	task copyWebapp(type: Sync) {
+		from 'src/main/webapp'
+		into 'build/deploy/webapp'
+	}
+}
+project(':integrate-core') {
+	jar.exclude 'logback-test.xml'
+	jar.exclude 'acp_sdk.properties'
+	jar.exclude 'integrate.properties'
+	dependencies{
+	    compile fileTree( dir: "lib", include: '*.jar' )
+	    compile 'com.google.protobuf:protobuf-java:2.5.0'
+	    compile 'io.netty:netty:3.9.0.Final'
+	    compile 'org.slf4j:slf4j-api:1.7.5'
+		compile 'org.apache.poi:poi-ooxml:3.15'
+		compile 'org.apache.poi:poi-examples:3.15'
+		compile 'org.apache.poi:poi-excelant:3.15'
+		compile 'org.apache.poi:poi-scratchpad:3.15'
+	    compile 'org.slf4j:jcl-over-slf4j:1.7.5'
+	    compile 'ch.qos.logback:logback-classic:1.0.13'
+        compile 'net.logstash.logback:logstash-logback-encoder:1.3'
+        compile 'com.fasterxml.jackson.core:jackson-databind:2.4.0'
+        compile 'com.fasterxml.jackson.datatype:jackson-datatype-json-org:2.4.0'
+        compile 'com.google.guava:guava:15.0'
+	    compile "org.springframework:spring-context:${SpringVersion}"
+	    compile "org.springframework:spring-jdbc:${SpringVersion}"
+		compile "org.eclipse.jetty:jetty-webapp:${JettyVersion}"
+compile "io.dropwizard.metrics:metrics-core:${MetricsVersion}"
+        compile "io.dropwizard.metrics:metrics-graphite:${MetricsVersion}"
+         compile "io.dropwizard.metrics:metrics-jetty8:${MetricsVersion}"
+         compile "io.dropwizard.metrics:metrics-servlet:${MetricsVersion}"
+         compile "io.dropwizard.metrics:metrics-servlets:${MetricsVersion}"
+ 		compile "io.dropwizard.metrics:metrics-jvm:${MetricsVersion}"
+		compile "javax.servlet:javax.servlet-api:3.1-b07"
+
+	    compile 'mysql:mysql-connector-java:5.1.28'
+        compile 'org.apache.commons:commons-lang3:3.1'
+        compile 'org.javassist:javassist:3.18.0-GA'
+        compile 'org.reflections:reflections:0.9.9-RC1'
+	    compile 'org.apache.httpcomponents:httpclient:4.3.4'
+		compile 'org.apache.httpcomponents:httpmime:4.3.4'
+	    compile 'org.mozilla:rhino:1.7R4'
+	    compile 'commons-beanutils:commons-beanutils:1.8.3'
+	    compile 'joda-time:joda-time:2.3'
+	    compile 'com.google.code.gson:gson:2.2.4'
+		compile 'commons-pool:commons-pool:1.6'
+	    compile 'com.belerweb:pinyin4j:2.5.0'
+        compile 'com.dyuproject.protostuff:protostuff-runtime:1.0.8'
+        compile 'com.dyuproject.protostuff:protostuff-core:1.0.8'
+        compile 'com.googlecode.protobuf-java-format:protobuf-java-format:1.2'
+        compile 'com.alibaba:druid:1.0.9'
+		compile 'org.aspectj:aspectjweaver:1.7.3'
+		compile 'org.aspectj:aspectjrt:1.7.3'
+        compile 'junit:junit:4.11'        
+		compile 'com.ning:async-http-client:1.8.9'
+		compile 'com.alibaba:fastjson:1.1.41'
+        compile "org.springframework:spring-web:${SpringVersion}"
+		compile "org.springframework:spring-test:${SpringVersion}"
+		compile 'org.mybatis:mybatis:3.2.1'
+		compile 'org.mybatis:mybatis-spring:1.2.0'
+		compile 'org.mybatis.caches:mybatis-ehcache:1.0.3'
+		compile 'redis.clients:jedis:2.8.1'
+		compile 'commons-codec:commons-codec:1.8'
+		compile 'commons-collections:commons-collections:3.2.1'
+		compile 'com.thoughtworks.xstream:xstream:1.4.9'
+		compile 'com.qiniu:qiniu-java-sdk:7.1.2'
+		compile 'org.jdom:jdom2:2.0.5'
+		compile 'org.freemarker:freemarker:2.3.21'
+    }
+}
+
+project(':integrate-web') {
+	dependencies{
+		compile project(':integrate-core')
+		compile "org.eclipse.jetty:jetty-jsp:${JettyVersion}"
+        compile "org.springframework:spring-web:${SpringVersion}"
+        compile "org.springframework:spring-webmvc:${SpringVersion}"
+		compile fileTree( dir: "lib", include: '*.jar' )	
+	}
+	task deploy(dependsOn: [copyLib, copyWebapp])	
+}
+
+project(':integrate-admin') {
+    dependencies{
+    	compile project(':integrate-core')
+        compile "org.eclipse.jetty:jetty-jsp:${JettyVersion}"
+        compile "org.springframework:spring-webmvc:${SpringVersion}"
+		compile "org.springframework:spring-aspects:${SpringVersion}"
+		compile "org.springframework:spring-context-support:${SpringVersion}"
+		compile "asm:asm:3.3.1"
+		compile "cglib:cglib-nodep:3.1"
+		compile "commons-discovery:commons-discovery:0.5"
+		compile "commons-fileupload:commons-fileupload:1.3.1"
+		compile "commons-httpclient:commons-httpclient:3.1"
+		compile "dom4j:dom4j:1.6.1"
+		compile "net.sf.ehcache:ehcache-core:2.6.9"
+		compile "net.sf.ezmorph:ezmorph:1.0.6"
+		compile "org.codehaus.jackson:jackson-mapper-asl:1.9.13"
+		compile "javax.xml:jaxrpc:1.1"
+		compile "taglibs:standard:1.1.2"
+		compile "wsdl4j:wsdl4j:1.6.3"
+		compile "org.apache.shiro:shiro-all:1.3.2"
+		compile "net.sf.json-lib:json-lib:2.4:jdk15"
+    }
+    task deploy(dependsOn: [copyLib, copyWebapp])
+}
+
+
+
+
+
+
+
+
+
+
+

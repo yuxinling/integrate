@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="RechargeOplogMapper">
+	<resultMap id="rechargeOplog" type="com.integrate.admin.module.rechrage.model.RechargeOplog">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<id column="rid" property="rid" jdbcType="BIGINT" />
+		<result column="before_money" property="beforeMoney" jdbcType="INTEGER" />
+		<result column="op_type" property="opType" jdbcType="INTEGER" />
+		<result column="change_money" property="changeMoney" jdbcType="INTEGER" />
+		<result column="op_user" property="opUser" jdbcType="VARCHAR" />
+		<result column="op_time" property="time" jdbcType="BIGINT" />
+		
+		<result column="recharge_time" property="rechargeTime" jdbcType="BIGINT" />
+		<result column="user_id" property="userId" jdbcType="BIGINT" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="datalistPage" parameterType="map" resultMap="rechargeOplog">
+		select 
+			tro.*,
+			tr.time as recharge_time,
+			tr.user_id,
+			tu.mobile,
+			tu.nick_name
+		from 
+			t_rechrage_oplog tro,
+			t_rechrage tr,
+		  t_user tu 
+		where 
+			tro.rid = tr.id
+		and 
+			tr.user_id = tu.user_id
+		<if test="pd.mobile != null and pd.mobile != ''">
+			AND tu.mobile =#{pd.mobile}
+		</if>
+		ORDER BY op_time desc
+	</select>
+</mapper>

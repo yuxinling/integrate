@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>资讯详情</title>
+<style>
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, input, button, textarea, select, p, th, td ,img{ margin:0; padding: 0;border: 0;}
+body, input, button, textarea, select {font-family:"微软雅黑";}
+body{font-size: 26px;color:#666;}
+
+/* section */
+section{width: 100%;height:auto;overflow: hidden;}
+.section_in{width:96%;margin: 0 auto;padding:26px auto;}
+.section_in h3{margin-top: 20px;font-size:36px;font-weight: normal;}
+.section_in .time{font-size: 22px;color: #999;line-height:58px;}
+#time{float: left;}
+#name{float: left;margin-left: 20px;}
+.section_in .new{width:60%;height: auto;margin: 0 auto;}
+.section_in img{width: 100%;height:auto;/*height:200px;*/}
+.section_in .article{line-height: 48px;margin-top: 12px;}
+</style>
+
+<script type="text/javascript" src="js/pxrem.js"></script>
+<script src="js/zepto/zepto.js"></script>
+<script src="js/seajs/sea.js"></script>
+<script>
+	var nid;
+	var q = location.search.substr(1);   
+	var qs = q.split("&");  
+	if (qs) {   
+	for (var i=0;i<qs.length;i++) {   
+	   queryName = qs[i].substring(0,qs[i].indexOf("="));
+	   queryValue = qs[i].substring(qs[i].indexOf("=")+1);
+
+	   if("nid"==queryName){
+		   nid=queryValue;
+	   }
+	   
+	 } 
+	if(nid==null || nid=='' ){
+		window.location.href="404.html";
+	}else{
+		var jsonPHost = 'https://www.yk-zb.com/crowdsource/web/surface/newsInfo?jsonp=jsonpCallback&nid='+nid;
+		$.ajax({
+			url: jsonPHost,
+			cache:true,
+			dataType:"jsonp",
+			jsonp:'jsonpCallback',
+			timeout:10000,
+			jsonpCallback: "jsonpCallback",
+			success: function(json) {
+			},
+			error: function(XMLHttpRequest, status, e) {
+				if(e!=null){
+					window.location.href="404.html";
+				}
+			}
+		});
+	}
+
+	function jsonpCallback(json) {
+		var status = parseInt(json.status);
+		if(status==1){
+			var data = json.data;
+			data = eval("("+data+")");
+			$("#title").text(data.title);
+			$("#newsImg").attr("src",data.newsUrl);
+			$("#content").html(data.content);
+			$("#time").text(data.pubDate);
+			$("#name").text(data.pubNickname);
+		}else{
+			window.location.href="404.html";
+		}
+	}
+}  
+</script>
+
+</head>
+
+<body>
+<section>
+	<div class="section_in">	
+        <h3 id="title"></h3>
+       
+        <p class="time" >
+        	<span id="time" class=""></span>
+        	<span id="name"></span>
+        </p>
+        <div class="img">
+        	<img id="newsImg" src="" alt="">
+        </div>
+        <p class="article" id="content"></p>
+    </div>
+</section>
+
+</body>
+</html>
+
