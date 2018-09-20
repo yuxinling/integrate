@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ProductMapper">
+	<resultMap id="ProductResult" type="com.integrate.model.Product">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="integrate" property="integrate" jdbcType="INTEGER" />
+		<result column="thumbnail" property="thumbnail" jdbcType="VARCHAR" />
+		<result column="detail" property="detail" jdbcType="BLOB" typeHandler="com.integrate.admin.handler.ConvertBlobTypeHandler"/>
+		<result column="sort" property="sort" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="BIGINT" />
+		<result column="update_time" property="updateTime" jdbcType="BIGINT" />
+	</resultMap>
+	
+	<insert id="insertProduct" parameterType="com.integrate.model.Product" useGeneratedKeys="true"  keyProperty="id" keyColumn="id">
+		INSERT INTO t_product (
+			name, 
+			integrate, 
+			thumbnail, 
+			detail, 
+			sort, 
+			create_time, 
+			update_time
+		) VALUES (
+			#{name}, 
+			#{integrate},
+			#{thumbnail},
+			#{detail},
+			#{sort},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="updateProduct" parameterType="com.integrate.model.Product">
+		UPDATE t_product set 
+			name = #{name},
+			integrate = #{integrate},
+			thumbnail = #{thumbnail},
+			detail  = #{detail},
+			sort = #{sort},
+			update_time = #{updateTime}
+		where 
+			id = #{id}
+	</update>
+	
+	<delete id="deleteProduct" parameterType="Long">
+		DELETE FROM t_product WHERE id = #{id};
+	</delete>
+	
+	<select id="getProducts" resultMap="ProductResult">
+		SELECT id, name, integrate, thumbnail, detail, sort, create_time, update_time
+		FROM t_product
+	</select>
+	
+	<select id="getProduct" resultMap="ProductResult" parameterType="Long">
+		SELECT id, name, integrate, thumbnail, detail, sort, create_time, update_time
+		FROM t_product
+		WHERE id = #{id}
+	</select>
+</mapper>

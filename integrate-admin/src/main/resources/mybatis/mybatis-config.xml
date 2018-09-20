@@ -8,6 +8,9 @@
         <setting name="useGeneratedKeys" value="true" /> 
         <setting name="defaultExecutorType" value="REUSE" /> 
     </settings>
+<!--     <typeHandlers>
+    	<typeHandler handler="com.integrate.admin.handler.ConvertBlobTypeHandler" javaType="String" jdbcType="BLOB"/>
+    </typeHandlers> -->
 
 	<typeAliases>
 		<typeAlias type="com.integrate.admin.entity.system.AdminUser" alias="User"/>

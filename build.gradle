@@ -3,6 +3,14 @@ def JettyVersion = '8.1.14.v20131031'
 def MetricsVersion = '3.1.2'
 
 apply plugin: 'idea'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+  
+group = 'com.bazlur.app'
+// artifactId is taken by default, from folder name
+version = '0.1-SNAPSHOT'
+
 idea.project.languageLevel = '1.7'
 
 buildscript {
@@ -77,7 +85,7 @@ project(':integrate-core') {
 	    compile "org.springframework:spring-context:${SpringVersion}"
 	    compile "org.springframework:spring-jdbc:${SpringVersion}"
 		compile "org.eclipse.jetty:jetty-webapp:${JettyVersion}"
-compile "io.dropwizard.metrics:metrics-core:${MetricsVersion}"
+		compile "io.dropwizard.metrics:metrics-core:${MetricsVersion}"
         compile "io.dropwizard.metrics:metrics-graphite:${MetricsVersion}"
          compile "io.dropwizard.metrics:metrics-jetty8:${MetricsVersion}"
          compile "io.dropwizard.metrics:metrics-servlet:${MetricsVersion}"

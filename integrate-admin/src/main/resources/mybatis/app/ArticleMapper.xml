@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ArticleMapper">
+	<resultMap id="ArticleResult" type="com.integrate.model.Article">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="detail" property="detail" jdbcType="BLOB" typeHandler="com.integrate.admin.handler.ConvertBlobTypeHandler"/>
+		<result column="create_time" property="createTime" jdbcType="BIGINT" />
+		<result column="update_time" property="updateTime" jdbcType="BIGINT" />
+	</resultMap>
+	
+	<insert id="insertArticle" parameterType="com.integrate.model.Article" useGeneratedKeys="true"  keyProperty="id" keyColumn="id">
+		INSERT INTO t_article (
+			title, 
+			detail, 
+			create_time, 
+			update_time
+		) VALUES (
+			#{title}, 
+			#{detail},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="updateArticle" parameterType="com.integrate.model.Article">
+		UPDATE t_article set 
+			title = #{title},
+			detail  = #{detail} ,
+			update_time = #{updateTime}
+		where 
+			id = #{id}
+	</update>
+	
+	<delete id="deleteArticle" parameterType="Long">
+		DELETE FROM t_article WHERE id = #{id};
+	</delete>
+	
+	<select id="getArticles" resultMap="ArticleResult">
+		SELECT id, title, detail, create_time, update_time
+		FROM t_article
+	</select>
+	
+	<select id="getArticle" resultMap="ArticleResult" parameterType="Long">
+		SELECT id, title, detail, create_time, update_time
+		FROM t_article
+		WHERE id = #{id}
+	</select>
+</mapper>

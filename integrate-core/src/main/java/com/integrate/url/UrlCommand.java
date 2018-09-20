@@ -82,6 +82,15 @@ public interface UrlCommand {
 	String unionpay_notify = "/unionpay/notify";
 
 	String unionpay_query = "/unionpay/query";
+	
+	String news_images = "/news/images";
+	String article_titles = "/articles/titles";
+	String article_detail = "/articles/{id}";
+	String product = "/products";
+	String product_search = "/products/search";
+	String product_detail = "/products/{id}";
+	
+	
 
 	/*************************** admin后台URL bg开头 ******************************/
 
@@ -100,6 +109,15 @@ public interface UrlCommand {
 	String app="bg/appList";
 	String app_goto_edit="bg/appToEdit";
 	String app_edit="bg/appEdit";
+	String image_new="bg/imageNews";
+	String image_upload="bg/images/upload";
+	String article_new="bg/articleNews";
+	String article_new_goto_edit="bg/articleNewToEdit";
+	String article_new_goto_view="bg/articleNewToView";
+	String article_new_edit="bg/articleNewEdit";
+	String article_new_delete="bg/articleNewDelete";
+	String product_list = "bg/productList";
+	String product_goto_edit = "bg/productToEdit";
 	
 	
 	String user_list ="bg/userList";
