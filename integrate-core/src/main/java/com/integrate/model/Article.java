@@ -4,6 +4,7 @@ public class Article {
 	private long id;
 	private String title;
 	private String detail;
+	private String dateTime;
     private Long createTime;
     private Long updateTime;
 	
